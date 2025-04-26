@@ -1,26 +1,23 @@
 list:
 - command:
-    action: cli
-    cli_cmd: calc
+    action: ahk
+    exe_path: ahk/Open calculator.exe
+    exe_args:
   voice:
     sounds:
     - ok1
     - ok2
     - ok3
   phrases:
-  - включи калькулятор
   - открой калькулятор
   - покажи калькулятор
   - запусти калькулятор
   - калькулятор
 
 - command:
-    action: cli
-    cli_cmd: taskkill
-    cli_args:
-    - /f
-    - /im
-    - CalculatorApp.exe
+    action: ahk
+    exe_path: ahk/Close calculator.exe
+    exe_args:
   voice:
     sounds:
     - ok1
@@ -30,4 +27,6 @@ list:
   - закрой калькулятор
   - отключи калькулятор
   - выключи калькулятор
-  - убери калькулятор
+  - закрой приложение калькулятора
+  - отключи приложение калькулятора
+  - выключи приложение калькулятора

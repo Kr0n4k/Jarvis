@@ -11,6 +11,34 @@ list:
   phrases:
   - сверни все окна
   - сверни окна
+  - разверни все окна
+  - разверни окна
+  - покажи все окна
+  - покажи окна
+
+- command:
+    action: ahk
+    exe_path: ahk/Minimize current window.exe
+    exe_args:
+  voice:
+    sounds:
+    - ok1
+    - ok2
+    - ok3
+  phrases:
+  - сверни текущее окно
+
+- command:
+    action: ahk
+    exe_path: ahk/Maximize current window.exe
+    exe_args:
+  voice:
+    sounds:
+    - ok1
+    - ok2
+    - ok3
+  phrases:
+  - разверни текущее окно
 
 - command:
     action: ahk
@@ -53,6 +81,51 @@ list:
   - сделай скриншот
   - сделай снимок экрана
   - сними экран
+
+- command:
+    action: ahk
+    exe_path: ahk/shutdown.exe
+    exe_args:
+  voice:
+    sounds:
+    - ok1
+    - ok2
+    - ok3
+  phrases:
+  - выключи компьютер
+  - заверши работу
+  - выруби комп
+  - выключи комп
+
+- command:
+    action: ahk
+    exe_path: ahk/Cancel shutdown.exe
+    exe_args:
+  voice:
+    sounds:
+    - ok1
+    - ok2
+    - ok3
+  phrases:
+  - отмени выключение
+  - отмени завершение работы
+  - отмени выключение компьютер
+  - отмени выключение компа
+  - отмена выключения
+
+- command:
+    action: ahk
+    exe_path: ahk/reload.exe
+    exe_args:
+  voice:
+    sounds:
+    - ok1
+    - ok2
+    - ok3
+    - ok4
+  phrases:
+  - перезагрузи компьютер
+  - перезагрузи комп
 
 - command:
     action: ahk
@@ -122,3 +195,54 @@ list:
   - поменяй язык на русский
   - смени язык на английский
   - поменяй язык на английский
+
+- command:
+    action: ahk
+    exe_path: ahk/Open downloads.exe
+    exe_args:
+  voice:
+    sounds:
+    - ok1
+    - ok2
+    - ok3
+  phrases:
+  - открой загрузки
+  - запусти загрузки
+  - покажи загрузки
+  - загрузки
+
+- command:
+    action: ahk
+    exe_path: ahk/Open settings.exe
+    exe_args:
+  voice:
+    sounds:
+    - ok1
+    - ok2
+    - ok3
+  phrases:
+  - открой параметры
+  - запусти параметры
+  - покажи параметры
+  - открой настройки
+  - запусти настройки
+  - покажи настройки
+  - параметры
+  - настройки
+
+- command:
+    action: ahk
+    exe_path: ahk/Close settings.exe
+    exe_args:
+  voice:
+    sounds:
+    - ok1
+    - ok2
+    - ok3
+  phrases:
+  - закрой параметры
+  - выключи параметры
+  - отключи параметры
+  - закрой настройки
+  - выключи настройки
+  - отключи настройки

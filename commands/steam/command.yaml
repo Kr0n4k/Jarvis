@@ -2,9 +2,12 @@ list:
 - command:
     action: ahk
     exe_path: ahk/Open steam.exe
+    exe_args:
   voice:
     sounds:
-    - game_mode
+    - ok1
+    - ok2
+    - ok3
   phrases:
   - включи игровой режим
   - перейди в игровой режим
@@ -12,10 +15,12 @@ list:
   - включи стим
   - запусти стим
   - открой стим
+  - стим
 
 - command:
     action: ahk
     exe_path: ahk/Close steam.exe
+    exe_args:
   voice:
     sounds:
     - ok1

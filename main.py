@@ -53,8 +53,9 @@ def play_sound(phrase, wait_done=True):
         "stupid": "stupid.wav",
         "ready": "ready.wav",
         "off": "off.wav",
+        "joke": f"joke{random.choice([1,2,3,4,5])}.wav",
     }
-    filename = f"{CDIR}\\sound\\{sounds.get(phrase, 'not_found.wav')}"
+    filename = f"{CDIR}\\sounds\\{sounds.get(phrase, 'not_found.wav')}"
 
     if wait_done:
         recorder.stop()  # Stop recording to avoid sound distortion
@@ -101,14 +102,17 @@ def recognize_cmd(cmd: str, va_cmd_list):
 
     for phrase, command in va_cmd_list.items():
         similarity = fuzz.ratio(cmd, phrase)
+        print(f"Checking phrase: '{phrase}' | Similarity: {similarity}%")  # Отладочный вывод
         if similarity > best_match['percent']:
             best_match = {'cmd': command, 'percent': similarity}
 
+    print(f"Best match: {best_match['cmd']} | Percent: {best_match['percent']}%")  # Отладочный вывод
     return best_match
 
 def execute_cmd(cmd: dict):
     """Execute a command based on the recognized input."""
     if not cmd:
+        print("ERROR: Command is empty.")
         return
 
     action = cmd.get('action')
@@ -133,10 +137,12 @@ def execute_cmd(cmd: dict):
     elif action == "shutdown":
         shutdown()
     elif action == "voice":
-        sound = cmd.get('sound')
+        sound = cmd.get('sounds')
         if not sound:
             return
         play_sound(sound)
+    elif action == "joke":
+        play_sound("joke")
 
 def mute_sound(mute: bool):
     """Mute or unmute the system sound."""
@@ -159,6 +165,8 @@ def va_respond(voice: str):
     filtered_cmd = filter_cmd(voice, config.VA_ALIAS, config.VA_TBR)
     recognized_cmd = recognize_cmd(filtered_cmd, VA_CMD_LIST)
 
+    # Вывод процента совпадения
+    print(f"Recognized command: {recognized_cmd['cmd']} | Percent: {recognized_cmd['percent']}%")
 
     if not recognized_cmd['cmd']:
         return handle_unrecognized_command(voice)
@@ -195,20 +203,19 @@ def handle_gpt_response(voice: str):
     data = {
         "model": "deepseek-ai/DeepSeek-R1",
         "messages": [
-            {
-                "role": "system",
-                "content": "You are a helpful assistant"
-            },
-            {
-                "role": "user",
-                "content": voice
-            }
+            {"role": "system", "content": "You are a helpful assistant"},
+            {"role": "user", "content": voice},
         ],
     }
 
-    response = requests.post(url, headers=headers, json=data)
-    response_data = response.json()
-    text = response_data['choices'][0]['message']['content'].split('</think>\n\n')[1]
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        response.raise_for_status()
+        response_data = response.json()
+        text = response_data['choices'][0]['message']['content'].split('</think>\n\n')[1]
+    except requests.exceptions.RequestException as e:
+        print(f"ERROR: Failed to fetch GPT response: {e}")
+        return False
 
     recorder.stop()
     tts.va_speak(text)
@@ -265,7 +272,7 @@ def load_va_commands(directory="commands"):
         for file in files:
             if file.endswith(".yaml"):
                 with open(os.path.join(root, file), 'rt', encoding='utf8') as f:
-                    data = yaml.safe_load(f)
+                    data = yaml.safe_load(f) or {}
                     for item in data.get('list', []):
                         command = item.get('command', {})
                         phrases = item.get('phrases', [])
@@ -277,6 +284,8 @@ def load_va_commands(directory="commands"):
 VA_CMD_LIST = load_va_commands()
 
 if __name__ == "__main__":
+    if not os.getcwd().endswith("Kr0n"):
+        os.chdir(CDIR)
     recorder = initialize_recorder()
     play_sound("run")
     time.sleep(0.5)
